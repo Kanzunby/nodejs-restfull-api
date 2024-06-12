@@ -76,8 +76,8 @@ const login = async (request) => {
 };
 
 // Get User
-const getUser = async (dataUsername) => {
-  const username = validate(getUserValidation, dataUsername);
+const getUser = async (username) => {
+  username = validate(getUserValidation, username);
 
   const user = await prismaClient.user.findUnique({
     where: {
@@ -131,4 +131,37 @@ const updateUser = async (request) => {
   });
 };
 
-export default { register, login, getUser, updateUser };
+// Logout
+const logout = async (username) => {
+  username = validate(getUserValidation, username);
+
+  const user = await prismaClient.user.findUnique({
+    where: {
+      username: username,
+    },
+  });
+
+  if (!user) {
+    throw new ResponseErrorr(404, "User is not found");
+  }
+
+  return prismaClient.user.update({
+    where: {
+      username: username,
+    },
+    data: {
+      token: null,
+    },
+    select: {
+      username: true,
+    },
+  });
+};
+
+export default {
+  register,
+  login,
+  getUser,
+  updateUser,
+  logout,
+};
