@@ -40,12 +40,26 @@ export const createTestContact = async (authorId) => {
   await prismaClient.contact.create({
     data: {
       authorId: authorId,
-      first_name: "",
+      first_name: "test",
       last_name: "test",
       email: "test@gmail.com",
       phone: "083465748",
     },
   });
+};
+
+export const createManyTestContact = async (authorId) => {
+  for (let i = 0; i < 15; i++) {
+    await prismaClient.contact.create({
+      data: {
+        authorId: authorId,
+        first_name: `test ${i}`,
+        last_name: `test ${i}`,
+        email: `test${i}@gmail.com`,
+        phone: `083465748${i}`,
+      },
+    });
+  }
 };
 
 export const getTestContact = async (authorId) => {

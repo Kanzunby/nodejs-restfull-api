@@ -82,7 +82,7 @@ Response Body Error :
 }
 ```
 
-## Get COntact API
+## Get Contact API
 
 Endpoint : GET /api/contacts/:id
 

@@ -56,4 +56,25 @@ const remove = async (req, res, next) => {
   }
 };
 
-export default { create, get, update, remove };
+const search = async (req, res, next) => {
+  try {
+    const authorId = req.user.id;
+    const request = {
+      name: req.query.name,
+      email: req.query.email,
+      phone: req.query.phone,
+      page: req.query.page,
+      size: req.query.size,
+    };
+
+    const result = await contactService.search(authorId, request);
+    res.status(200).json({
+      data: result.data,
+      paging: result.paging,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export default { create, get, update, remove, search };
