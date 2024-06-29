@@ -81,4 +81,24 @@ const update = async (authorId, request) => {
   });
 };
 
-export default { create, get, update };
+const remove = async (authorId, contactId) => {
+  contactId = validate(getContactValidation, contactId);
+
+  const totalContactInDatabase = await prismaClient.contact.count({
+    where: {
+      authorId: authorId,
+      id: contactId,
+    },
+  });
+
+  if (totalContactInDatabase !== 1) {
+    throw new ResponseErrorr(404, "contact is not found");
+  }
+
+  return prismaClient.contact.delete({
+    where: {
+      id: contactId,
+    },
+  });
+};
+export default { create, get, update, remove };
