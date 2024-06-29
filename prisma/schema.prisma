@@ -34,10 +34,8 @@ model Contact {
   last_name  String?
   email      String    @unique
   phone      String?
-  // author     User      @relation(fields: [authorId], references: [id])
-  // authorId   String    @db.ObjectId
-  author     User      @relation(fields: [username], references: [username])
-  username   String
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   String    @db.ObjectId
   address    Address[]
 }
 
