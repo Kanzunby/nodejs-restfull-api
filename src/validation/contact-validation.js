@@ -9,4 +9,16 @@ const createContactValidation = Joi.object({
 
 const getContactValidation = Joi.string();
 
-export { createContactValidation, getContactValidation };
+const updateContactValidation = Joi.object({
+  id: Joi.string(),
+  first_name: Joi.string().max(100).required(),
+  last_name: Joi.string().max(100).optional(),
+  email: Joi.string().max(200).required(),
+  phone: Joi.string().max(20).optional(),
+});
+
+export {
+  createContactValidation,
+  getContactValidation,
+  updateContactValidation,
+};

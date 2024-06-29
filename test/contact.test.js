@@ -93,3 +93,70 @@ describe("GET /api/contacts/:contactId", function () {
     expect(result.status).toBe(404);
   });
 });
+
+describe("PUT /api/contacts/:contactId", function () {
+  beforeEach(async () => {
+    await createTestUser();
+    const author = await getTestUser();
+    await createTestContact(author.id);
+  });
+
+  afterEach(async () => {
+    const author = await getTestUser();
+    await removeAllTestContacts(author.id);
+    await removeTestUser();
+  });
+
+  it("should can update existing contact", async () => {
+    const author = await getTestUser();
+    const testContact = await getTestContact(author.id);
+
+    const result = await supertest(web)
+      .put("/api/contacts/" + testContact.id)
+      .set("Authorization", "test")
+      .send({
+        first_name: "Kanzun",
+        last_name: "Bairuha",
+        email: "kanzunby@gmail.com",
+        phone: "081326473857",
+      });
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.id).toBe(testContact.id);
+    expect(result.body.data.first_name).toBe("Kanzun");
+    expect(result.body.data.last_name).toBe("Bairuha");
+    expect(result.body.data.email).toBe("kanzunby@gmail.com");
+    expect(result.body.data.phone).toBe("081326473857");
+  });
+
+  it("should reject if request is invalid", async () => {
+    const author = await getTestUser();
+    const testContact = await getTestContact(author.id);
+
+    const result = await supertest(web)
+      .put("/api/contacts/" + testContact.id)
+      .set("Authorization", "test")
+      .send({
+        first_name: "",
+        last_name: "",
+        email: "kanzunby",
+        phone: "",
+      });
+
+    expect(result.status).toBe(400);
+  });
+
+  it("should reject if contact is not found", async () => {
+    const result = await supertest(web)
+      .put("/api/contacts/667ff25b6ba88b5d43788b59")
+      .set("Authorization", "test")
+      .send({
+        first_name: "Kanzun",
+        last_name: "Bairuha",
+        email: "kanzunby@gmail.com",
+        phone: "081326473857",
+      });
+
+    expect(result.status).toBe(404);
+  });
+});
