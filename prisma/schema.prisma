@@ -29,21 +29,25 @@ model User {
 }
 
 model Contact {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   first_name String
   last_name  String?
-  email      String   @unique
-  phone      String
-  address    Address?
-  author     User     @relation(fields: [authorId], references: [id])
-  authorId   String   @db.ObjectId
+  email      String    @unique
+  phone      String?
+  // author     User      @relation(fields: [authorId], references: [id])
+  // authorId   String    @db.ObjectId
+  author     User      @relation(fields: [username], references: [username])
+  username   String
+  address    Address[]
 }
 
-// Address is an embedded document
-type Address {
-  street   String
-  city     String
-  province String
-  country  String
-  zip      String
+model Address {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  street      String?
+  city        String  @unique
+  province    String
+  country     String
+  postal_code String
+  contact     Contact @relation(fields: [contact_id], references: [id])
+  contact_id  String  @db.ObjectId
 }
