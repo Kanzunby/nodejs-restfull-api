@@ -29,5 +29,9 @@ userRouter.put(
   "/api/contacts/:contactId/address/:addressId",
   addressController.update
 );
+userRouter.delete(
+  "/api/contacts/:contactId/address/:addressId",
+  addressController.remove
+);
 
 export { userRouter };
