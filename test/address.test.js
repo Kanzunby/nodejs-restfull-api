@@ -142,3 +142,92 @@ describe("GET /api/contacts/:contactId/address/:addressId", () => {
     expect(result.status).toBe(404);
   });
 });
+
+// Test update address
+describe("PUT /api/contacts/:contactId/address/:addressId", () => {
+  const createAddress = true;
+  before(createAddress);
+  after();
+
+  it("should can update address", async () => {
+    const author = await getTestUser();
+    const contact = await getTestContact(author.id);
+    const address = await getTestAddress(author.id);
+
+    const result = await supertest(web)
+      .put(`/api/contacts/${contact.id}/address/${address.id}`)
+      .set("Authorization", "test")
+      .send({
+        street: "new street",
+        city: "new city",
+        province: "new province",
+        country: "new country",
+        postal_code: "54352",
+      });
+
+    logger.info(result.body);
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.id).toBe(address.id);
+    expect(result.body.data.street).toBe("new street");
+    expect(result.body.data.city).toBe("new city");
+    expect(result.body.data.province).toBe("new province");
+    expect(result.body.data.country).toBe("new country");
+    expect(result.body.data.postal_code).toBe("54352");
+  });
+
+  it("should reject if request is not valid", async () => {
+    const author = await getTestUser();
+    const contact = await getTestContact(author.id);
+    const address = await getTestAddress(author.id);
+
+    const result = await supertest(web)
+      .put(`/api/contacts/${contact.id}/address/${address.id}`)
+      .set("Authorization", "test")
+      .send({
+        street: "new street",
+        city: "new city",
+        province: "",
+        country: "",
+        postal_code: "54352",
+      });
+
+    expect(result.status).toBe(400);
+  });
+
+  it("should reject if address is not found", async () => {
+    const author = await getTestUser();
+    const contact = await getTestContact(author.id);
+
+    const result = await supertest(web)
+      .put(`/api/contacts/${contact.id}/address/66809e5c32ee100026d90179`)
+      .set("Authorization", "test")
+      .send({
+        street: "new street",
+        city: "new city",
+        province: "new province",
+        country: "new country",
+        postal_code: "54352",
+      });
+
+    expect(result.status).toBe(404);
+  });
+
+  it("should reject if contact is not found", async () => {
+    const author = await getTestUser();
+    const address = await getTestAddress(author.id);
+
+    const result = await supertest(web)
+      .put(`/api/contacts/66809e5c32ee100026d90179/address/${address.id}`)
+      .set("Authorization", "test")
+      .send({
+        street: "new street",
+        city: "new city",
+        province: "new province",
+        country: "new country",
+        postal_code: "54352",
+      });
+
+    expect(result.status).toBe(404);
+  });
+});
