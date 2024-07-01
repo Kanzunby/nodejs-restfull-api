@@ -34,6 +34,7 @@ const after = () => {
   });
 };
 
+// Test create address
 describe("POST /api/contacts/:contactId/address", () => {
   const createAddress = false;
   before(createAddress);
@@ -96,6 +97,7 @@ describe("POST /api/contacts/:contactId/address", () => {
   });
 });
 
+// Test get address
 describe("GET /api/contacts/:contactId/address/:addressId", () => {
   const createAddress = true;
   before(createAddress);

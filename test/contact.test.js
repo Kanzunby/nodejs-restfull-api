@@ -11,16 +11,30 @@ import {
   removeTestUser,
 } from "./test-util.js";
 
-describe("POST /api/contacts", function () {
+const before = (createContact) => {
   beforeEach(async () => {
     await createTestUser();
-  });
 
+    if (createContact) {
+      const author = await getTestUser();
+      await createTestContact(author.id);
+    }
+  });
+};
+
+const after = () => {
   afterEach(async () => {
     const author = await getTestUser();
     await removeAllTestContacts(author.id);
     await removeTestUser();
   });
+};
+
+// Test create contact
+describe("POST /api/contacts", function () {
+  const createContact = false;
+  before(createContact);
+  after();
 
   it("should can create new contact", async () => {
     const result = await supertest(web)
@@ -57,18 +71,11 @@ describe("POST /api/contacts", function () {
   });
 });
 
+// Test get contact
 describe("GET /api/contacts/:contactId", function () {
-  beforeEach(async () => {
-    await createTestUser();
-    const author = await getTestUser();
-    await createTestContact(author.id);
-  });
-
-  afterEach(async () => {
-    const author = await getTestUser();
-    await removeAllTestContacts(author.id);
-    await removeTestUser();
-  });
+  const createContact = true;
+  before(createContact);
+  after();
 
   it("should can get contact", async () => {
     const author = await getTestUser();
@@ -95,18 +102,11 @@ describe("GET /api/contacts/:contactId", function () {
   });
 });
 
+// Test update contact
 describe("PUT /api/contacts/:contactId", function () {
-  beforeEach(async () => {
-    await createTestUser();
-    const author = await getTestUser();
-    await createTestContact(author.id);
-  });
-
-  afterEach(async () => {
-    const author = await getTestUser();
-    await removeAllTestContacts(author.id);
-    await removeTestUser();
-  });
+  const createContact = true;
+  before(createContact);
+  after();
 
   it("should can update existing contact", async () => {
     const author = await getTestUser();
@@ -162,18 +162,11 @@ describe("PUT /api/contacts/:contactId", function () {
   });
 });
 
+// Test delete contact
 describe("DELETE /api/contacts/:contactId", function () {
-  beforeEach(async () => {
-    await createTestUser();
-    const author = await getTestUser();
-    await createTestContact(author.id);
-  });
-
-  afterEach(async () => {
-    const author = await getTestUser();
-    await removeAllTestContacts(author.id);
-    await removeTestUser();
-  });
+  const createContact = true;
+  before(createContact);
+  after();
 
   it("should can delete contact", async () => {
     const author = await getTestUser();
@@ -199,6 +192,7 @@ describe("DELETE /api/contacts/:contactId", function () {
   });
 });
 
+// Test Search Contact
 describe("GET /api/contacts", () => {
   beforeEach(async () => {
     await createTestUser();
@@ -206,11 +200,7 @@ describe("GET /api/contacts", () => {
     await createManyTestContact(author.id);
   });
 
-  afterEach(async () => {
-    const author = await getTestUser();
-    await removeAllTestContacts(author.id);
-    await removeTestUser();
-  });
+  after();
 
   it("should can search without parameter", async () => {
     const result = await supertest(web)

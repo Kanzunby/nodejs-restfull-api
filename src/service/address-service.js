@@ -24,6 +24,7 @@ const checkContactValidation = async (authorId, contactId) => {
   return contactId;
 };
 
+// Create Address
 const create = async (authorId, contactId, request) => {
   contactId = await checkContactValidation(authorId, contactId);
 
@@ -43,6 +44,7 @@ const create = async (authorId, contactId, request) => {
   });
 };
 
+// Get Address
 const get = async (authorId, contactId, addressId) => {
   contactId = await checkContactValidation(authorId, contactId);
   addressId = validate(getAddressValidation, addressId);

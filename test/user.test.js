@@ -4,11 +4,21 @@ import { logger } from "../src/apps/logging.js";
 import { createTestUser, getTestUser, removeTestUser } from "./test-util.js";
 import bycript from "bcrypt";
 
-// Test register User
-describe("POST /api/users", function () {
+const before = () => {
+  beforeEach(async () => {
+    await createTestUser();
+  });
+};
+
+const after = () => {
   afterEach(async () => {
     await removeTestUser();
   });
+};
+
+// Test register User
+describe("POST /api/users", function () {
+  after();
 
   it("should can register new user", async () => {
     const result = await supertest(web).post("/api/users").send({
@@ -63,13 +73,8 @@ describe("POST /api/users", function () {
 
 // Test Login User
 describe("POST /api/users/login", function () {
-  beforeEach(async () => {
-    await createTestUser();
-  });
-
-  afterEach(async () => {
-    await removeTestUser();
-  });
+  before();
+  after();
 
   it("should can login", async () => {
     const result = await supertest(web).post("/api/users/login").send({
@@ -123,13 +128,8 @@ describe("POST /api/users/login", function () {
 
 // Test Get User
 describe("GET /api/users/current", function () {
-  beforeEach(async () => {
-    await createTestUser();
-  });
-
-  afterAll(async () => {
-    await removeTestUser();
-  });
+  before();
+  after();
 
   it("should can get current user", async () => {
     const result = await supertest(web)
@@ -155,13 +155,8 @@ describe("GET /api/users/current", function () {
 
 // Test Update User
 describe("PATCH /api/users/current", function () {
-  beforeEach(async () => {
-    await createTestUser();
-  });
-
-  afterEach(async () => {
-    await removeTestUser();
-  });
+  before();
+  after();
 
   it("should can update user", async () => {
     const result = await supertest(web)
@@ -221,13 +216,8 @@ describe("PATCH /api/users/current", function () {
 
 // Test Logout
 describe("DELETE /api/users/logout", function () {
-  beforeEach(async () => {
-    await createTestUser();
-  });
-
-  afterEach(async () => {
-    await removeTestUser();
-  });
+  before();
+  after();
 
   it("should can logout", async () => {
     const result = await supertest(web)

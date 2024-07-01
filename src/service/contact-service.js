@@ -8,6 +8,7 @@ import { validate } from "../validation/validation.js";
 import { prismaClient } from "../apps/database.js";
 import { ResponseErrorr } from "../error/response-error.js";
 
+// Create Contact
 const create = async (authorId, request) => {
   const contact = validate(createContactValidation, request);
   contact.authorId = authorId;
@@ -24,6 +25,7 @@ const create = async (authorId, request) => {
   });
 };
 
+// Get Contact
 const get = async (authorId, contactId) => {
   contactId = validate(getContactValidation, contactId);
 
@@ -48,6 +50,7 @@ const get = async (authorId, contactId) => {
   return contact;
 };
 
+// Update Contact
 const update = async (authorId, request) => {
   const contact = validate(updateContactValidation, request);
 
@@ -82,6 +85,7 @@ const update = async (authorId, request) => {
   });
 };
 
+// Remove Contact
 const remove = async (authorId, contactId) => {
   contactId = validate(getContactValidation, contactId);
 
@@ -103,6 +107,7 @@ const remove = async (authorId, contactId) => {
   });
 };
 
+// Search Contact
 const search = async (authorId, request) => {
   request = validate(searchContactValidation, request);
 
