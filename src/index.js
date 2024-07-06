@@ -1,5 +1,5 @@
-import { logger } from "./src/apps/logging.js";
-import { web } from "./src/apps/web.js";
+import { logger } from "./apps/logging.js";
+import { web } from "./apps/web.js";
 
 const port = 7000;
 
