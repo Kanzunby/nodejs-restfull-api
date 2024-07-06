@@ -15,6 +15,7 @@ const prisma = new PrismaClient();
 async function main() {
   // const allUser = await prisma.user.findMany();
   // console.log(allUser);
+  // hallo
 
   await prisma.user.create({
     data: {
