@@ -2,10 +2,10 @@
   "name": "nodejs-restfull-api",
   "version": "1.0.0",
   "description": "\"Belajar NodeJS RESTfull API\"",
-  "main": "src/main.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest -i",
-    "dev": "nodemon src/main.js"
+    "dev": "nodemon index"
   },
   "jest": {
     "transform": {
