@@ -6,8 +6,7 @@
 
 datasource db {
   provider = "mongodb"
-  // url      = env("DATABASE_URL")
-  url      = "mongodb+srv://kanzun:kanzun12@cluster1.8n9qe5j.mongodb.net/restapi"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
